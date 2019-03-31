@@ -1,3 +1,4 @@
+<a href="https://996.icu"><img src="https://img.shields.io/badge/link-996.icu-red.svg"></a>
 # cchess-zero
 AlphaZero implemented Chinese chess. AlphaGo Zero / AlphaZero实践项目，实现中国象棋。
 
@@ -52,3 +53,6 @@ python main.py --mode train --train_playout 1200 --batch_size 512 --search_threa
 下棋命令举例：
 
 python main.py --mode play --ai_count 1 --ai_function mcts --play_playout 1200 --human_color w
+
+# 许可
+Licensed under the MIT License with the [`996ICU License`](https://github.com/996icu/996.ICU/blob/master/LICENSE).
