@@ -1,0 +1,9 @@
+<component name="ProjectCodeStyleConfiguration">
+  <code_scheme name="Project" version="173">
+    <codeStyleSettings language="Python">
+      <indentOptions>
+        <option name="TAB_SIZE" value="12" />
+      </indentOptions>
+    </codeStyleSettings>
+  </code_scheme>
+</component>
