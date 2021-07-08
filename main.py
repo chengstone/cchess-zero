@@ -6,6 +6,11 @@ import uvloop
 asyncio.set_event_loop_policy(uvloop.EventLoopPolicy())
 
 import tensorflow as tf
+
+# from tensorflow.python.framework import ops
+# ops.reset_default_graph()
+
+
 import numpy as np
 import os
 import sys
@@ -20,13 +25,13 @@ import scipy.stats
 from threading import Lock
 from concurrent.futures import ThreadPoolExecutor
 
-def flipped_uci_labels(param):
+def flipped_uci_labels(param):#快速翻动标签
     def repl(x):
         return "".join([(str(9 - int(a)) if a.isdigit() else a) for a in x])
-
+# Python isdigit() 方法检测字符串是否只由数字组成。
     return [repl(x) for x in param]
 
-# 创建所有合法走子UCI，size 2086
+# 创建所有合法走子UCI，size 2086      UCCI中国象棋通用引擎协议
 def create_uci_labels():
     labels_array = []
     letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i']
@@ -51,6 +56,7 @@ def create_uci_labels():
                            [(l1, t) for t in range(10)] + \
                            [(l1 + a, n1 + b) for (a, b) in
                             [(-2, -1), (-1, -2), (-2, 1), (1, -2), (2, -1), (-1, 2), (2, 1), (1, 2)]]  # 马走日
+                        #z画一个坐标系可以看出来，这些点是代表马🐎在当前位置可以走的8个位置
             for (l2, n2) in destinations:
                 if (l1, n1) != (l2, n2) and l2 in range(9) and n2 in range(10):
                     move = letters[l1] + numbers[n1] + letters[l2] + numbers[n2]
@@ -64,11 +70,11 @@ def create_uci_labels():
 
     return labels_array
 
-def create_position_labels():
+def create_position_labels():#创建一个位置/安置标签
     labels_array = []
-    letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i']
+    letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i']#横坐标
     letters.reverse()
-    numbers = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
+    numbers = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']#纵坐标
 
     for l1 in range(9):
         for n1 in range(10):
@@ -77,7 +83,7 @@ def create_position_labels():
 #     labels_array.reverse()
     return labels_array
 
-def create_position_labels_reverse():
+def create_position_labels_reverse(): #创建一个新的位置标签
     labels_array = []
     letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i']
     letters.reverse()
@@ -90,7 +96,7 @@ def create_position_labels_reverse():
     labels_array.reverse()
     return labels_array
 
-class leaf_node(object):
+class leaf_node(object): #目标叶子节点
     def __init__(self, in_parent, in_prior_p, in_state):
         self.P = in_prior_p
         self.Q = 0
@@ -120,6 +126,8 @@ class leaf_node(object):
         this node's prior adjusted for its visit count, u
         c_puct -- a number in (0, inf) controlling the relative impact of values, Q, and
             prior probability, P, on this node's score.
+            计算并返回该节点的值:叶计算、Q和 该节点已根据其访问计数
+            (u c_puck——(0,inf)中的一个数字，控制值Q和的相对影响 在这个节点的scor上，先验概率P
         """
         # self._u = c_puct * self._P * np.sqrt(self._parent._n_visits) / (1 + self._n_visits)
         self.U = c_puct * self.P * np.sqrt(self.parent.N) / ( 1 + self.N)
@@ -1333,7 +1341,9 @@ class cchess_main(object):
         # for i in range(self.playout_counts):
         #     state_sim = copy.deepcopy(state)
         #     self.mcts.do_simulation(state_sim, self.game_borad.current_player, self.game_borad.restrict_round)
-
+        # 取得当前局面下所有子节点的合法走子和相应的访问量。
+        # 这个所有子节点可能并不会覆盖所有合法的走子，这个是由树搜索的质量决定的，加大模拟次数会搜索更多不同的走法，
+        # 就是加大思考的深度，考虑更多的局面，避免出现有些特别重要的棋步却没有考虑到的情况。
         self.mcts.main(state, self.game_borad.current_player, self.game_borad.restrict_round, self.playout_counts)
 
         actions_visits = [(act, nod.N) for act, nod in self.mcts.root.child.items()]

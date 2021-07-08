@@ -1,7 +1,7 @@
 #coding:utf-8
 import tensorflow as tf
+from tensorflow.python.framework import ops
 import numpy as np
-
 import os
 
 
@@ -12,7 +12,7 @@ class policy_value_network(object):
         self.is_logging = True
 
         """reset TF Graph"""
-        tf.reset_default_graph()
+        ops.reset_default_graph()
         """Creat a new graph for the network"""
         # g = tf.Graph()
 
