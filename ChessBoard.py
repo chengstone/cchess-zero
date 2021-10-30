@@ -73,14 +73,14 @@ class ChessBoard:
         del self.pieces[x, y]
 
     def select(self, x, y, player_is_red):
-        # 选中棋子
+        # 选中棋子  # Select chess pieces
         if not self.selected_piece:
             if (x, y) in self.pieces and self.pieces[x, y].is_red == player_is_red:
                 self.pieces[x, y].selected = True
                 self.selected_piece = self.pieces[x, y]
             return False, None
 
-        # 移动棋子
+        # 移动棋子  # Move the pieces
         if not (x, y) in self.pieces:
             if self.selected_piece:
                 ox, oy = self.selected_piece.x, self.selected_piece.y
@@ -91,11 +91,11 @@ class ChessBoard:
                     return True, (ox, oy, x, y)
             return False, None
 
-        # 同一个棋子
+        # 同一个棋子  # The same chess piece
         if self.pieces[x, y].selected:
             return False, None
 
-        # 吃子
+        # 吃子 # Take Piece
         if self.pieces[x, y].is_red != player_is_red:
             ox, oy = self.selected_piece.x, self.selected_piece.y
             if self.can_move(ox, oy, x-ox, y-oy):
@@ -105,10 +105,10 @@ class ChessBoard:
                 return True, (ox, oy, x, y)
             return False, None
 
-        # 取消选中
+        # 取消选中 # Uncheck
         for key in self.pieces.keys():
             self.pieces[key].selected = False
-        # 选择棋子
+        # 选择棋子 # Choose a piece
         self.pieces[x, y].selected = True
         self.selected_piece = self.pieces[x,y]
         return False, None
