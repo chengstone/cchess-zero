@@ -16,7 +16,7 @@ Welcome to forward and spread ^_^
 
 This is a practical project of AlphaZero, which implements a Chinese chess program, developed with TensorFlow1.0 and Python 3.5, and also installs uvloop.
 
-Because my model is not fully trained, I only trained it less than 4K times. The model has just learned to use elephants and soldiers to defend. In short, I still play chess badly.
+Because my model is not fully trained, I only trained it less than 4K times. The model has just learned to use bishop and Advisor to defend. In short, It still play chess badly.
 
 If you have the conditions, you can try more training. I have taken aws offline since I received the 400 USD credit card charge notification: D Poverty limits my imagination O(∩_∩)O
 
@@ -45,7 +45,7 @@ For Chess:
  - --ai_function Specifies the chess method of ai, whether it is thinking (mcts, slow) or intuition (net, fast chess)
  - --play_playout specifies the number of MCTS simulations performed by ai
  - --delay and --end_delay are just fine by default. The two ai play chess too fast, so I don't know how the two ai played :)
- - --human_color specifies the color of the human chess player, w is the first move, b is the second move
+ - --human_color specifies the color of the human chess player, w is the initiative, b is the passive
 
 
 Examples of training commands:
@@ -56,5 +56,5 @@ Examples of chess commands:
 
 python main.py --mode play --ai_count 1 --ai_function mcts --play_playout 1200 --human_color w
 
-# Permission
+# License
 Licensed under the MIT License with the [`996ICU License`](https://github.com/996icu/996.ICU/blob/master/LICENSE).

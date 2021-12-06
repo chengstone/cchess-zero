@@ -95,7 +95,7 @@ class ChessBoard:
         if self.pieces[x, y].selected:
             return False, None
 
-        # 吃子 # Take Piece
+        # 吃子 # capture piece
         if self.pieces[x, y].is_red != player_is_red:
             ox, oy = self.selected_piece.x, self.selected_piece.y
             if self.can_move(ox, oy, x-ox, y-oy):
