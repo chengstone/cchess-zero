@@ -340,7 +340,7 @@ class MCTS_tree(object):
         self.running_simulation_num += 1
 
         # reduce parallel search number
-        with await self.sem:
+        async with self.sem:
             value = await self.start_tree_search(node, current_player, restrict_round)
             # logger.debug(f"value: {value}")
             # logger.debug(f'Current running threads : {RUNNING_SIMULATION_NUM}')

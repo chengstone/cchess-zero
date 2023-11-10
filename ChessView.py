@@ -59,13 +59,13 @@ class ChessView:
         if (dst_x, dst_y) in pieces.keys():
             self.piece_images[dst_x, dst_y] = tkinter.PhotoImage(file=pieces[dst_x, dst_y].get_selected_image())
             self.can.create_image(board_coord(dst_x), board_coord(dst_y), image=self.piece_images[dst_x, dst_y])
-            self.can.create_text(board_coord(dst_x), board_coord(dst_y), text="{:.3f}".format(percentage))
+            self.can.create_text(board_coord(dst_x), board_coord(dst_y), text="{:.3f}".format(float(percentage)))
             self.last_text_x = dst_x
             self.last_text_y = dst_y
         else:
             self.move_images.append(tkinter.PhotoImage(file="images/OOS.gif"))
             self.can.create_image(board_coord(dst_x), board_coord(dst_y), image=self.move_images[-1])
-            self.can.create_text(board_coord(dst_x), board_coord(dst_y),text="{:.3f}".format(percentage))
+            self.can.create_text(board_coord(dst_x), board_coord(dst_y),text="{:.3f}".format(float(percentage)))
             self.last_text_x = dst_x
             self.last_text_y = dst_y
             self.print_text_flag = True

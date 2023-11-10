@@ -60,11 +60,13 @@ class ChessGame:
             if self.players["w"] == "AI":
                 self.win_rate['w'] = self.perform_AI()
                 self.view.draw_board(self.board)
+                self.view.root.update()
                 self.change_player()
         elif self.game_mode == 2:
             print('-----Round %d-----' % self.cur_round)
             self.win_rate['w'] = self.perform_AI()
             self.view.draw_board(self.board)
+            self.view.root.update()
 
         self.view.start()
 
@@ -83,6 +85,7 @@ class ChessGame:
             self.view.print_text_flag = False
             self.view.can.create_image(0, 0, image=self.view.img, anchor=tkinter.NW)
         self.view.draw_board(self.board)
+        self.view.root.update()
         if self.check_end():
             self.view.root.update()
             self.quit()
@@ -98,7 +101,7 @@ class ChessGame:
                 return
             performed = self.change_player()
             if performed:
-                self.view.draw_board(self.board)
+                # self.view.draw_board(self.board)
                 if self.check_end():
                     self.view.root.update()
                     self.quit()
@@ -170,6 +173,8 @@ class ChessGame:
         if self.game_mode == 1:
             if self.players[self.current_player] == "AI":
                 self.win_rate[self.current_player] = self.perform_AI()
+                self.view.draw_board(self.board)
+                self.view.root.update()
                 return True
             return False
         elif self.game_mode == 2:
@@ -177,14 +182,16 @@ class ChessGame:
             #     self.human_win_rate = self.perform_AI()
             # else:
             self.win_rate[self.current_player] = self.perform_AI()
+            self.view.draw_board(self.board)
+            self.view.root.update()
             return True
         return False
 
     def perform_AI(self):
         print ('...AI is calculating...')
-        START_TIME = time.clock()
+        START_TIME = time.process_time()
         move, win_rate = self.cchess_engine.select_move(self.ai_function)
-        time_used = time.clock() - START_TIME
+        time_used = time.process_time() - START_TIME
         print ('...Use %fs...' % time_used)
         if self.current_player == "w":
             self.time_red.append(time_used)
