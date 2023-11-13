@@ -46,7 +46,7 @@
                 "--ai_count", "1",
                 "--ai_function", "net",
                 "--play_playout", "1200", 
-                "--human_color", "w"
+                "--human_color", "r"
             ]
         }
     ]

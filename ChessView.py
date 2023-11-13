@@ -14,6 +14,9 @@ class ChessView:
     can.create_image(0, 0, image=img, anchor=tkinter.NW)
     piece_images = dict()
     move_images = []
+    
+    # 根据当前棋盘的pieces的数据，绘制棋盘界面
+    # 绘制棋盘采用tkinter库来完成
     def draw_board(self, board):
         self.piece_images.clear()
         self.move_images = []
@@ -123,7 +126,7 @@ class ChessView:
             self.root.update()
             time.sleep(self.control.delay)
             while True:
-                game_end = self.control.game_mode_2()
+                game_end = self.control.next_play()
                 self.root.update()
                 time.sleep(self.control.delay)
                 if game_end:

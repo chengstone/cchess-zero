@@ -286,7 +286,7 @@ class MCTS_tree(object):
     #         # print("do_simulation while current_player : ", current_player)
     #         with self.node_lock[node]:
     #             action, node = node.select(self.c_puct)
-    #         current_player = "w" if current_player == "b" else "b"
+    #         current_player = "r" if current_player == "b" else "b"
     #         if is_kill_move(last_state, node.state) == 0:
     #             restrict_round += 1
     #         else:
@@ -390,7 +390,7 @@ class MCTS_tree(object):
             last_state = node.state
 
             action, node = node.select_new(c_PUCT)
-            current_player = "w" if current_player == "b" else "b"
+            current_player = "r" if current_player == "b" else "b"
             if is_kill_move(last_state, node.state) == 0:
                 restrict_round += 1
             else:
@@ -499,7 +499,7 @@ class MCTS_tree(object):
         while(node.is_leaf() == False):
             # print("do_simulation while current_player : ", current_player)
             action, node = node.select(self.c_puct)
-            current_player = "w" if current_player == "b" else "b"
+            current_player = "r" if current_player == "b" else "b"
             if is_kill_move(last_state, node.state) == 0:
                 restrict_round += 1
             else:
@@ -572,7 +572,7 @@ class MCTS_tree(object):
         def swapall(aa):
             return "".join([swapcase(a) for a in aa])
 
-        return "/".join([swapall(row) for row in reversed(rows)]),  ('w' if current_player == 'b' else 'b')
+        return "/".join([swapall(row) for row in reversed(rows)]),  ('r' if current_player == 'b' else 'b')
 
     def is_black_turn(self, current_player):
         return current_player == 'b'
@@ -585,8 +585,8 @@ class GameBoard(object):
     def __init__(self):
         self.state = "RNBAKABNR/9/1C5C1/P1P1P1P1P/9/9/p1p1p1p1p/1c5c1/9/rnbakabnr"#"rnbakabnr/9/1c5c1/p1p1p1p1p/9/9/P1P1P1P1P/1C5C1/9/RNBAKABNR"    #
         self.round = 1
-        # self.players = ["w", "b"]
-        self.current_player = "w"
+        # self.players = ["r", "b"]
+        self.current_player = "r"
         self.restrict_round = 0
 
 # 小写表示黑方，大写表示红方
@@ -605,7 +605,7 @@ class GameBoard(object):
     def reload(self):
         self.state = "RNBAKABNR/9/1C5C1/P1P1P1P1P/9/9/p1p1p1p1p/1c5c1/9/rnbakabnr"#"rnbakabnr/9/1c5c1/p1p1p1p1p/9/9/P1P1P1P1P/1C5C1/9/RNBAKABNR"    #
         self.round = 1
-        self.current_player = "w"
+        self.current_player = "r"
         self.restrict_round = 0
 
     @staticmethod
@@ -794,7 +794,7 @@ class GameBoard(object):
 
                             moves.append(m)
 
-                    elif(board_positions[y][x] == 'R' and current_player == 'w'):
+                    elif(board_positions[y][x] == 'R' and current_player == 'r'):
                         toY = y
                         for toX in range(x - 1, -1, -1):
                             m = GameBoard.board_pos_name[y][x] + GameBoard.board_pos_name[toY][toX]
@@ -844,7 +844,7 @@ class GameBoard(object):
                                 toX = x + 2 * j
                                 if GameBoard.check_bounds(toY, toX) and GameBoard.validate_move(board_positions[toY][toX], upper=False) and board_positions[y][toX - j].isalpha() == False:
                                     moves.append(GameBoard.board_pos_name[y][x] + GameBoard.board_pos_name[toY][toX])
-                    elif ((board_positions[y][x] == 'N' or board_positions[y][x] == 'H') and current_player == 'w'):
+                    elif ((board_positions[y][x] == 'N' or board_positions[y][x] == 'H') and current_player == 'r'):
                         for i in range(-1, 3, 2):
                             for j in range(-1, 3, 2):
                                 toY = y + 2 * i
@@ -871,7 +871,7 @@ class GameBoard(object):
                                                                         upper=False) and toY >= 5 and \
                                             board_positions[y + i // 2][x - i // 2].isalpha() == False:
                                 moves.append(GameBoard.board_pos_name[y][x] + GameBoard.board_pos_name[toY][toX])
-                    elif ((board_positions[y][x] == 'B' or board_positions[y][x] == 'E') and current_player == 'w'):
+                    elif ((board_positions[y][x] == 'B' or board_positions[y][x] == 'E') and current_player == 'r'):
                         for i in range(-2, 3, 4):
                             toY = y + i
                             toX = x + i
@@ -902,7 +902,7 @@ class GameBoard(object):
                             if GameBoard.check_bounds(toY, toX) and GameBoard.validate_move(board_positions[toY][toX],
                                                                         upper=False) and toY >= 7 and toX >= 3 and toX <= 5:
                                 moves.append(GameBoard.board_pos_name[y][x] + GameBoard.board_pos_name[toY][toX])
-                    elif (board_positions[y][x] == 'A' and current_player == 'w'):
+                    elif (board_positions[y][x] == 'A' and current_player == 'r'):
                         for i in range(-1, 3, 2):
                             toY = y + i
                             toX = x + i
@@ -935,7 +935,7 @@ class GameBoard(object):
                         K_x = x
                         K_y = y
 
-                        if(current_player == 'w'):
+                        if(current_player == 'r'):
                             for i in range(2):
                                 for sign in range(-1, 2, 2):
                                     j = 1 - i
@@ -1003,7 +1003,7 @@ class GameBoard(object):
                                     if (board_positions[toY][toX].isupper()):
                                         moves.append(m)
                                     break
-                    elif (board_positions[y][x] == 'C' and current_player == 'w'):
+                    elif (board_positions[y][x] == 'C' and current_player == 'r'):
                         toY = y
                         hits = False
                         for toX in range(x - 1, -1, -1):
@@ -1078,7 +1078,7 @@ class GameBoard(object):
                             if (GameBoard.check_bounds(toY, toX) and GameBoard.validate_move(board_positions[toY][toX], upper=False)):
                                 moves.append(GameBoard.board_pos_name[y][x] + GameBoard.board_pos_name[toY][toX])
 
-                    elif (board_positions[y][x] == 'P' and current_player == 'w'):
+                    elif (board_positions[y][x] == 'P' and current_player == 'r'):
                         toY = y + 1
                         toX = x
 
@@ -1138,17 +1138,17 @@ class cchess_main(object):
         self.lr_multiplier = 1.0  # adaptively adjust the learning rate based on KL
         self.buffer_size = 10000
         self.data_buffer = deque(maxlen=self.buffer_size)
-        self.game_borad = GameBoard()
+        self.game_board = GameBoard()
         self.processor = processor
-        # self.current_player = 'w'    #“w”表示红方，“b”表示黑方。
+        # self.current_player = 'r'    #“w”表示红方，“b”表示黑方。
         self.policy_value_netowrk = policy_value_network(self.lr_callback, res_block_nums) if processor == 'cpu' else policy_value_network_gpus(num_gpus, res_block_nums)
         self.search_threads = in_search_threads
-        self.mcts = MCTS_tree(self.game_borad.state, self.policy_value_netowrk.forward, self.search_threads)
+        self.mcts = MCTS_tree(self.game_board.state, self.policy_value_netowrk.forward, self.search_threads)
         self.exploration = exploration
         self.resign_threshold = -0.8    #0.05
         self.global_step = 0
         self.kl_targ = 0.025
-        self.log_file = open(os.path.join(os.getcwd(), 'log_file.txt'), 'w')
+        self.log_file = open(os.path.join(os.getcwd(), 'log_file.txt'), 'r')
         self.human_color = human_color
 
     @staticmethod
@@ -1269,13 +1269,13 @@ class cchess_main(object):
     # def get_action(self, state, temperature = 1e-3):
     #     # for i in range(self.playout_counts):
     #     #     state_sim = copy.deepcopy(state)
-    #     #     self.mcts.do_simulation(state_sim, self.game_borad.current_player, self.game_borad.restrict_round)
+    #     #     self.mcts.do_simulation(state_sim, self.game_board.current_player, self.game_board.restrict_round)
     #
     #     futures = []
     #     with ThreadPoolExecutor(max_workers=self.search_threads) as executor:
     #         for _ in range(self.playout_counts):
     #             state_sim = copy.deepcopy(state)
-    #             futures.append(executor.submit(self.mcts.do_simulation, state_sim, self.game_borad.current_player, self.game_borad.restrict_round))
+    #             futures.append(executor.submit(self.mcts.do_simulation, state_sim, self.game_board.current_player, self.game_board.restrict_round))
     #
     #     vals = [f.result() for f in futures]
     #
@@ -1299,7 +1299,7 @@ class cchess_main(object):
         if mcts_or_net == "mcts":
             if self.mcts.root.child == {}:
                 disp_mcts_msg_handler()
-                self.mcts.main(self.game_borad.state, self.game_borad.current_player, self.game_borad.restrict_round,
+                self.mcts.main(self.game_board.state, self.game_board.current_player, self.game_board.restrict_round,
                                self.playout_counts)
 
             actions_visits = [(act, nod.N) for act, nod in self.mcts.root.child.items()]
@@ -1310,20 +1310,20 @@ class cchess_main(object):
 
             act_prob_dict = defaultdict(float)
             for i in range(len(actions)):
-                if self.human_color == 'w':
+                if self.human_color == 'r':
                     action = "".join(flipped_uci_labels(actions[i]))
                 else:
                     action = actions[i]
                 act_prob_dict[action] = probs[i]
 
         elif mcts_or_net == "net":
-            positions = self.mcts.generate_inputs(self.game_borad.state, self.game_borad.current_player)
+            positions = self.mcts.generate_inputs(self.game_board.state, self.game_board.current_player)
             positions = np.expand_dims(positions, 0)
             action_probs, value = self.mcts.forward(positions)
 
-            if self.mcts.is_black_turn(self.game_borad.current_player):
+            if self.mcts.is_black_turn(self.game_board.current_player):
                 action_probs = cchess_main.flip_policy(action_probs)
-            moves = GameBoard.get_legal_moves(self.game_borad.state, self.game_borad.current_player)
+            moves = GameBoard.get_legal_moves(self.game_board.state, self.game_board.current_player)
 
             tot_p = 1e-8
             action_probs = tf.squeeze(action_probs)  # .flatten()  # .squeeze()
@@ -1332,7 +1332,7 @@ class cchess_main(object):
             for action in moves:
                 # in_state = GameBoard.sim_do_action(action, self.state)
                 mov_p = action_probs[label2i[action]]
-                if self.human_color == 'w':
+                if self.human_color == 'r':
                     action = "".join(flipped_uci_labels(action))
                 act_prob_dict[action] = mov_p
                 # new_node = leaf_node(self, mov_p, in_state)
@@ -1351,9 +1351,9 @@ class cchess_main(object):
     def get_action(self, state, temperature = 1e-3):
         # for i in range(self.playout_counts):
         #     state_sim = copy.deepcopy(state)
-        #     self.mcts.do_simulation(state_sim, self.game_borad.current_player, self.game_borad.restrict_round)
+        #     self.mcts.do_simulation(state_sim, self.game_board.current_player, self.game_board.restrict_round)
 
-        self.mcts.main(state, self.game_borad.current_player, self.game_borad.restrict_round, self.playout_counts)
+        self.mcts.main(state, self.game_board.current_player, self.game_board.restrict_round, self.playout_counts)
 
         actions_visits = [(act, nod.N) for act, nod in self.mcts.root.child.items()]
         actions, visits = zip(*actions_visits)
@@ -1379,7 +1379,7 @@ class cchess_main(object):
     def get_action_old(self, state, temperature = 1e-3):
         for i in range(self.playout_counts):
             state_sim = copy.deepcopy(state)
-            self.mcts.do_simulation(state_sim, self.game_borad.current_player, self.game_borad.restrict_round)
+            self.mcts.do_simulation(state_sim, self.game_board.current_player, self.game_board.restrict_round)
 
         actions_visits = [(act, nod.N) for act, nod in self.mcts.root.child.items()]
         actions, visits = zip(*actions_visits)
@@ -1397,14 +1397,14 @@ class cchess_main(object):
         return act, move_probs
 
     def check_end(self):
-        if (self.game_borad.state.find('K') == -1 or self.game_borad.state.find('k') == -1):
-            if (self.game_borad.state.find('K') == -1):
-                print("Green is Winner")
+        if (self.game_board.state.find('K') == -1 or self.game_board.state.find('k') == -1):
+            if (self.game_board.state.find('K') == -1):
+                print("Black is Winner")
                 return True, "b"
-            if (self.game_borad.state.find('k') == -1):
+            if (self.game_board.state.find('k') == -1):
                 print("Red is Winner")
-                return True, "w"
-        elif self.game_borad.restrict_round >= 60:
+                return True, "r"
+        elif self.game_board.restrict_round >= 60:
             print("TIE! No Winners!")
             return True, "t"
         else:
@@ -1425,42 +1425,42 @@ class cchess_main(object):
 
         action = src_x + src_y + dst_x + dst_y
 
-        if self.human_color == 'w':
+        if self.human_color == 'r':
             action = "".join(flipped_uci_labels(action))
 
         if mcts_or_net == "mcts":
             if self.mcts.root.child == {}:
-                # self.get_action(self.game_borad.state, self.temperature)
-                self.mcts.main(self.game_borad.state, self.game_borad.current_player, self.game_borad.restrict_round,
+                # self.get_action(self.game_board.state, self.temperature)
+                self.mcts.main(self.game_board.state, self.game_board.current_player, self.game_board.restrict_round,
                                self.playout_counts)
             win_rate = self.mcts.Q(action) # / 2.0 + 0.5
             self.mcts.update_tree(action)
 
-        last_state = self.game_borad.state
-        # print(self.game_borad.current_player, " now take a action : ", action, "[Step {}]".format(self.game_borad.round))
-        self.game_borad.state = GameBoard.sim_do_action(action, self.game_borad.state)
-        self.game_borad.round += 1
-        self.game_borad.current_player = "w" if self.game_borad.current_player == "b" else "b"
-        if is_kill_move(last_state, self.game_borad.state) == 0:
-            self.game_borad.restrict_round += 1
+        last_state = self.game_board.state
+        # print(self.game_board.current_player, " now take a action : ", action, "[Step {}]".format(self.game_board.round))
+        self.game_board.state = GameBoard.sim_do_action(action, self.game_board.state)
+        self.game_board.round += 1
+        self.game_board.current_player = "r" if self.game_board.current_player == "b" else "b"
+        if is_kill_move(last_state, self.game_board.state) == 0:
+            self.game_board.restrict_round += 1
         else:
-            self.game_borad.restrict_round = 0
+            self.game_board.restrict_round = 0
 
         return win_rate
 
 
     def select_move(self, mcts_or_net):
         if mcts_or_net == "mcts":
-            action, probs, win_rate = self.get_action(self.game_borad.state, self.temperature)
+            action, probs, win_rate = self.get_action(self.game_board.state, self.temperature)
             # win_rate = self.mcts.Q(action) / 2.0 + 0.5
         elif mcts_or_net == "net":
-            positions = self.mcts.generate_inputs(self.game_borad.state, self.game_borad.current_player)
+            positions = self.mcts.generate_inputs(self.game_board.state, self.game_board.current_player)
             positions = np.expand_dims(positions, 0)
             action_probs, value = self.mcts.forward(positions)
             win_rate = value[0, 0] # / 2 + 0.5
-            if self.mcts.is_black_turn(self.game_borad.current_player):
+            if self.mcts.is_black_turn(self.game_board.current_player):
                 action_probs = cchess_main.flip_policy(action_probs)
-            moves = GameBoard.get_legal_moves(self.game_borad.state, self.game_borad.current_player)
+            moves = GameBoard.get_legal_moves(self.game_board.state, self.game_board.current_player)
 
             tot_p = 1e-8
             action_probs = tf.squeeze(action_probs)  # .flatten()  # .squeeze()
@@ -1480,22 +1480,22 @@ class cchess_main(object):
             action = max(act_prob_dict.items(), key=lambda node: node[1])[0]
             # self.mcts.update_tree(action)
 
-        print('Win rate for player {} is {:.4f}'.format(self.game_borad.current_player, win_rate))
-        last_state = self.game_borad.state
-        print(self.game_borad.current_player, " now take a action : ", action, "[Step {}]".format(self.game_borad.round))    # if self.human_color == 'w' else "".join(flipped_uci_labels(action))
-        self.game_borad.state = GameBoard.sim_do_action(action, self.game_borad.state)
-        self.game_borad.round += 1
-        self.game_borad.current_player = "w" if self.game_borad.current_player == "b" else "b"
-        if is_kill_move(last_state, self.game_borad.state) == 0:
-            self.game_borad.restrict_round += 1
+        print('Win rate for player {} is {:.4f}'.format(self.game_board.current_player, win_rate))
+        last_state = self.game_board.state
+        print(self.game_board.current_player, " now take a action : ", action, "[Step {}]".format(self.game_board.round))    # if self.human_color == 'r' else "".join(flipped_uci_labels(action))
+        self.game_board.state = GameBoard.sim_do_action(action, self.game_board.state)
+        self.game_board.round += 1
+        self.game_board.current_player = "r" if self.game_board.current_player == "b" else "b"
+        if is_kill_move(last_state, self.game_board.state) == 0:
+            self.game_board.restrict_round += 1
         else:
-            self.game_borad.restrict_round = 0
+            self.game_board.restrict_round = 0
 
-        self.game_borad.print_borad(self.game_borad.state)
+        self.game_board.print_borad(self.game_board.state)
 
         x_trans = {'a': 0, 'b': 1, 'c': 2, 'd': 3, 'e': 4, 'f': 5, 'g': 6, 'h': 7, 'i': 8}
 
-        if self.human_color == 'w':
+        if self.human_color == 'r':
             action = "".join(flipped_uci_labels(action))
 
         src = action[0:2]
@@ -1510,20 +1510,20 @@ class cchess_main(object):
         return (src_x, src_y, dst_x - src_x, dst_y - src_y), win_rate
 
     def selfplay(self):
-        self.game_borad.reload()
-        # p1, p2 = self.game_borad.players
+        self.game_board.reload()
+        # p1, p2 = self.game_board.players
         states, mcts_probs, current_players = [], [], []
         z = None
         game_over = False
         winnner = ""
         start_time = time.time()
-        # self.game_borad.print_borad(self.game_borad.state)
+        # self.game_board.print_borad(self.game_board.state)
         while(not game_over):
-            action, probs, win_rate = self.get_action(self.game_borad.state, self.temperature)
-            state, palyer = self.mcts.try_flip(self.game_borad.state, self.game_borad.current_player, self.mcts.is_black_turn(self.game_borad.current_player))
+            action, probs, win_rate = self.get_action(self.game_board.state, self.temperature)
+            state, palyer = self.mcts.try_flip(self.game_board.state, self.game_board.current_player, self.mcts.is_black_turn(self.game_board.current_player))
             states.append(state)
             prob = np.zeros(labels_len)
-            if self.mcts.is_black_turn(self.game_borad.current_player):
+            if self.mcts.is_black_turn(self.game_board.current_player):
                 for idx in range(len(probs[0][0])):
                     # probs[0][0][idx] = "".join((str(9 - int(a)) if a.isdigit() else a) for a in probs[0][0][idx])
                     act = "".join((str(9 - int(a)) if a.isdigit() else a) for a in probs[0][0][idx])
@@ -1534,34 +1534,34 @@ class cchess_main(object):
                     prob[label2i[probs[0][0][idx]]] = probs[0][1][idx]
             mcts_probs.append(prob)
             # mcts_probs.append(probs)
-            current_players.append(self.game_borad.current_player)
+            current_players.append(self.game_board.current_player)
 
-            last_state = self.game_borad.state
-            # print(self.game_borad.current_player, " now take a action : ", action, "[Step {}]".format(self.game_borad.round))
-            self.game_borad.state = GameBoard.sim_do_action(action, self.game_borad.state)
-            self.game_borad.round += 1
-            self.game_borad.current_player = "w" if self.game_borad.current_player == "b" else "b"
-            if is_kill_move(last_state, self.game_borad.state) == 0:
-                self.game_borad.restrict_round += 1
+            last_state = self.game_board.state
+            # print(self.game_board.current_player, " now take a action : ", action, "[Step {}]".format(self.game_board.round))
+            self.game_board.state = GameBoard.sim_do_action(action, self.game_board.state)
+            self.game_board.round += 1
+            self.game_board.current_player = "r" if self.game_board.current_player == "b" else "b"
+            if is_kill_move(last_state, self.game_board.state) == 0:
+                self.game_board.restrict_round += 1
             else:
-                self.game_borad.restrict_round = 0
+                self.game_board.restrict_round = 0
 
-            # self.game_borad.print_borad(self.game_borad.state, action)
+            # self.game_board.print_borad(self.game_board.state, action)
 
-            if (self.game_borad.state.find('K') == -1 or self.game_borad.state.find('k') == -1):
+            if (self.game_board.state.find('K') == -1 or self.game_board.state.find('k') == -1):
                 z = np.zeros(len(current_players))
-                if (self.game_borad.state.find('K') == -1):
+                if (self.game_board.state.find('K') == -1):
                     winnner = "b"
-                if (self.game_borad.state.find('k') == -1):
-                    winnner = "w"
+                if (self.game_board.state.find('k') == -1):
+                    winnner = "r"
                 z[np.array(current_players) == winnner] = 1.0
                 z[np.array(current_players) != winnner] = -1.0
                 game_over = True
-                print("Game end. Winner is player : ", winnner, " In {} steps".format(self.game_borad.round - 1))
-            elif self.game_borad.restrict_round >= 60:
+                print("Game end. Winner is player : ", winnner, " In {} steps".format(self.game_board.round - 1))
+            elif self.game_board.restrict_round >= 60:
                 z = np.zeros(len(current_players))
                 game_over = True
-                print("Game end. Tie in {} steps".format(self.game_borad.round - 1))
+                print("Game end. Tie in {} steps".format(self.game_board.round - 1))
             # elif(self.mcts.root.v < self.resign_threshold):
             #     pass
             # elif(self.mcts.root.Q < self.resign_threshold):
@@ -1590,7 +1590,7 @@ if __name__ == '__main__':
     parser.add_argument('--processor', default='cpu', choices=['cpu', 'gpu'], type=str, help='cpu or gpu')
     parser.add_argument('--num_gpus', default=1, type=int, help='gpu counts')
     parser.add_argument('--res_block_nums', default=7, type=int, help='res_block_nums')
-    parser.add_argument('--human_color', default='b', choices=['w', 'b'], type=str, help='w or b')
+    parser.add_argument('--human_color', default='b', choices=['r', 'b'], type=str, help='w or b')
     args = parser.parse_args()
 
     if args.mode == 'train':
