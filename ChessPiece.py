@@ -25,6 +25,8 @@ class ChessPiece:
                 if self.can_move(board, x-self.x, y-self.y):
                     moves.append((x,y))
         return moves
+    
+    # 将当前棋子从(x, y)移到(x+dx, y+dy)
     def move(self, board, dx, dy):
         nx, ny = self.x + dx, self.y + dy
         if (nx, ny) in board.pieces:
@@ -36,6 +38,7 @@ class ChessPiece:
         board.pieces[self.x, self.y] = self
         return True
 
+    # 计算(x, y) 与 (x+dx, y+dy)之间间隔了几个棋子
     def count_pieces(self, board, x, y, dx, dy):
         sx = dx/abs(dx) if dx!=0 else 0
         sy = dy/abs(dy) if dy!=0 else 0

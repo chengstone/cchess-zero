@@ -14,6 +14,9 @@ class ChessView:
     can.create_image(0, 0, image=img, anchor=tkinter.NW)
     piece_images = dict()
     move_images = []
+    
+    # 根据当前棋盘的pieces的数据，绘制棋盘界面
+    # 绘制棋盘采用tkinter库来完成
     def draw_board(self, board):
         self.piece_images.clear()
         self.move_images = []
@@ -59,13 +62,13 @@ class ChessView:
         if (dst_x, dst_y) in pieces.keys():
             self.piece_images[dst_x, dst_y] = tkinter.PhotoImage(file=pieces[dst_x, dst_y].get_selected_image())
             self.can.create_image(board_coord(dst_x), board_coord(dst_y), image=self.piece_images[dst_x, dst_y])
-            self.can.create_text(board_coord(dst_x), board_coord(dst_y), text="{:.3f}".format(percentage))
+            self.can.create_text(board_coord(dst_x), board_coord(dst_y), text="{:.3f}".format(float(percentage)))
             self.last_text_x = dst_x
             self.last_text_y = dst_y
         else:
             self.move_images.append(tkinter.PhotoImage(file="images/OOS.gif"))
             self.can.create_image(board_coord(dst_x), board_coord(dst_y), image=self.move_images[-1])
-            self.can.create_text(board_coord(dst_x), board_coord(dst_y),text="{:.3f}".format(percentage))
+            self.can.create_text(board_coord(dst_x), board_coord(dst_y),text="{:.3f}".format(float(percentage)))
             self.last_text_x = dst_x
             self.last_text_y = dst_y
             self.print_text_flag = True
@@ -123,7 +126,7 @@ class ChessView:
             self.root.update()
             time.sleep(self.control.delay)
             while True:
-                game_end = self.control.game_mode_2()
+                game_end = self.control.next_play()
                 self.root.update()
                 time.sleep(self.control.delay)
                 if game_end:

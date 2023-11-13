@@ -1,0 +1,53 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+
+    //命令分为两类，一类是训练，一类是下棋。
+
+    // 训练专用：
+
+    //  - --mode 指定是训练（train）还是下棋（play），默认是训练
+    //  - --train_playout 指定MCTS的模拟次数，论文中是1600，我做训练时使用1200
+    //  - --batch_size 指定训练数据达到多少时开始训练，默认512
+    //  - --search_threads 指定执行MCTS时的线程个数，默认16
+    //  - --processor 指定是使用cpu还是gpu，默认是cpu
+    //  - --num_gpus 指定gpu的个数，默认是1
+    //  - --res_block_nums 指定残差块的层数，论文中是19或39层，我默认是7
+
+    // 下棋专用：
+
+    //  - --ai_count 指定ai的个数，1是人机对战，2是看两个ai下棋
+    //  - --ai_function 指定ai的下棋方法，是思考（mcts，会慢），还是直觉（net，下棋快）
+    //  - --play_playout 指定ai进行MCTS的模拟次数
+    //  - --delay和--end_delay默认就好，两个ai下棋太快，就不知道俩ai怎么下的了：）
+    //  - --human_color 指定人类棋手的颜色，w是先手，b是后手
+
+    // 训练命令举例：
+
+    // python main.py --mode train --train_playout 1200 --batch_size 512 --search_threads 16 --processor gpu --num_gpus 2 --res_block_nums 7
+
+    // 下棋命令举例：
+
+    // python main.py --mode play --ai_count 1 --ai_function mcts --play_playout 1200 --human_color w
+
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Python: Current File",
+            "type": "python",
+            "request": "launch",
+            "program": "${file}",
+            "console": "integratedTerminal",
+            "justMyCode": true,
+
+            "args": [
+                "--mode", "play",
+                "--ai_count", "1",
+                "--ai_function", "net",
+                "--play_playout", "1200", 
+                "--human_color", "r"
+            ]
+        }
+    ]
+}
